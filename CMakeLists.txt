@@ -3,6 +3,6 @@ project(tiny_ledger)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(timy_ledger
+add_executable(tiny_ledger
         src/main.cpp
 )
