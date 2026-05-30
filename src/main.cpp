@@ -61,19 +61,19 @@ void handleClient(const int clientSocket) {
         try {
             int amount = std::stoi(body);
             if (amount <= 0) {
-                response = createHttpResponse("Amount for deposit must be positive\n", 200, "OK");
+                response = createHttpResponse("Amount for deposit must be positive", 200, "OK");
             } else {
                 balance += amount;
                 Transaction transaction;
                 transaction.deposit(amount);
                 transactions.push_back(transaction);
                 response = createHttpResponse(
-                    std::to_string(amount) + " deposited successfully\n", 200, "OK");
+                    std::to_string(amount) + " deposited successfully", 200, "OK");
             }
         }
         catch (const std::exception&) {
             response = createHttpResponse(
-                "Invalid deposit amount\n", 400, "Bad Request");
+                "Invalid deposit amount", 400, "Bad Request");
         }
     }
     else if (request.find("POST /withdraw") != std::string::npos) {
@@ -81,10 +81,10 @@ void handleClient(const int clientSocket) {
         try {
             int amount = std::stoi(body);
             if (amount <= 0) {
-                response = createHttpResponse("Invalid withdrawal amount\n", 400, "Bad Request");
+                response = createHttpResponse("Invalid withdrawal amount", 400, "Bad Request");
             }
             else if (balance < amount) {
-                response = createHttpResponse("Insufficient funds\n", 400, "Bad Request");
+                response = createHttpResponse("Insufficient funds", 400, "Bad Request");
             }
             else {
                 balance -= amount;
@@ -92,12 +92,12 @@ void handleClient(const int clientSocket) {
                 transaction.withdraw(amount);
                 transactions.push_back(transaction);
                 response = createHttpResponse(
-                    std::to_string(amount) + " withdrawn successfully\n", 200, "OK");
+                    std::to_string(amount) + " withdrawn successfully", 200, "OK");
             }
         }
         catch (const std::exception&) {
             response = createHttpResponse(
-                "Invalid withdrawal amount\n", 400, "Bad Request");
+                "Invalid withdrawal amount", 400, "Bad Request");
         }
     }
     else if (request.find("GET /balance") != std::string::npos) {
@@ -108,7 +108,10 @@ void handleClient(const int clientSocket) {
         for (auto transaction : transactions) {
             ss << transaction << std::endl;
         }
-        response = createHttpResponse("Transactions:\n" + ss.str(), 200, "OK");
+        response = createHttpResponse("Transactions:" + ss.str(), 200, "OK");
+    }
+    else {
+        response = createHttpResponse("Not Found", 404, "Not Found");
     }
     send(clientSocket, response.c_str(), response.size(), 0);
     close(clientSocket);
