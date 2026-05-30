@@ -7,13 +7,13 @@
 
 enum class transactionType {
     None = 0,
-    deposit = 1,
-    withdraw = 2
+    Deposit = 1,
+    Withdraw = 2
 };
 
 std::string transactionTypeToString(transactionType type) {
-    if (type == transactionType::deposit) return "deposit";
-    if (type == transactionType::withdraw) return "withdraw";
+    if (type == transactionType::Deposit) return "deposit";
+    if (type == transactionType::Withdraw) return "withdraw";
     return "unknown";
 }
 
@@ -23,11 +23,11 @@ class Transaction {
 public:
     void deposit(int value) {
         this->amount = value;
-        type = transactionType::deposit;
+        type = transactionType::Deposit;
     }
     void withdraw(int value) {
         this->amount = value;
-        type = transactionType::withdraw;
+        type = transactionType::Withdraw;
     }
     friend std::ostream &operator<<(std::ostream &os, const Transaction &transaction);
 };
